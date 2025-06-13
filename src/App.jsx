@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import skynetLogo from "./assets/skynet-logo.png";
-const background = "./public/cyberpunk-bg.jpg";
+const background = "/cyberpunk-bg.jpg";
 
 
 export default function App() {

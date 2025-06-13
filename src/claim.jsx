@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ethers } from "ethers";
 import skynetLogo from "./assets/skynet-logo.png";
-const background = "./public/cyberpunk-bg.jpg";
+const background = "/cyberpunk-bg.jpg";
 
 // Replace this with your deployed contract address
 const claimContractAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138";
