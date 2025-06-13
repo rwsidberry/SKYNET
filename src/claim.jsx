@@ -47,7 +47,7 @@ setClaimStatus("❌ Claim failed.");
 return (
 <div
 className="min-h-screen w-screen flex items-center justify-center bg-cover bg-center px-4"
-style={{ backgroundImage: `url(${background})` }}
+style={{ backgroundImage: `url("/cyberpunk-bg.jpg")` }}
 >
 <div className="bg-black bg-opacity-60 p-8 rounded-3xl shadow-lg border border-gray-300 w-full max-w-xl text-center mx-auto">
 <img src={skynetLogo} alt="Skynet Logo" className="h-16 mx-auto mb-4" />
