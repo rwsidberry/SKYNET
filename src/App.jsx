@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import skynetLogo from "./assets/skynet-logo.png";
-import background from "./assets/cyberpunk-bg.png";
+const background = "./public/cyberpunk-bg.jpg";
+
 
 export default function App() {
 const [walletConnected, setWalletConnected] = useState(false);
@@ -34,10 +35,10 @@ fetchBalance();
 
 return (
 <div
-className="w-screen min-h-screen flex justify-center items-center bg-cover bg-center px-4"
+className="min-h-screen w-screen flex items-center justify-center bg-cover bg-center px-4"
 style={{ backgroundImage: `url(${background})` }}
 >
-<div className="bg-black bg-opacity-70 backdrop-blur-md p-8 rounded-3xl shadow-lg border border-gray-700 w-full max-w-md text-white text-center">
+<div className="bg-black bg-opacity-60 p-8 rounded-3xl shadow-lg border border-gray-300 w-full max-w-xl text-center mx-auto">
 <div className="flex flex-col items-center">
 <img src={skynetLogo} alt="Skynet Logo" className="h-20 mb-4" />
 <h1 className="text-3xl font-bold text-white">SKYNET</h1>
@@ -49,7 +50,7 @@ Contract ETH Balance: {contractBalance} ETH
 <div className="space-y-4">
 <button
 onClick={connectWallet}
-className="w-full bg-gray-900 text-white py-2 px-4 rounded shadow-md hover:bg-gray-800"
+className="w-full bg-blue-800 text-white py-2 px-4 rounded shadow-md hover:bg-blue-700"
 >
 Connect Wallet
 </button>
@@ -60,10 +61,10 @@ className="w-full px-4 py-2 rounded border border-gray-700 bg-gray-900 text-whit
 value={ethAmount}
 onChange={(e) => setEthAmount(e.target.value)}
 />
-<button className="w-full bg-gray-900 text-white py-2 px-4 rounded shadow-md hover:bg-gray-800">
+<button className="w-full bg-blue-800 text-white py-2 px-4 rounded shadow-md hover:bg-blue-700">
 Buy SKY
 </button>
-<button className="w-full bg-gray-900 text-white py-2 px-4 rounded shadow-md hover:bg-gray-800">
+<button className="w-full bg-blue-800 text-white py-2 px-4 rounded shadow-md hover:bg-blue-700">
 Admin Withdraw ETH
 </button>
 </div>

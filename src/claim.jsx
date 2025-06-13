@@ -1,12 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { ethers } from "ethers";
 import skynetLogo from "./assets/skynet-logo.png";
-import background from "./assets/cyberpunk-bg.png";
+const background = "./public/cyberpunk-bg.jpg";
+
+// Replace this with your deployed contract address
+const claimContractAddress = "0xYourClaimContractAddress";
+
+// Minimal ABI for claim() function
+const claimAbi = [
+"function claim() public"
+];
 
 export default function Claim() {
 const [walletConnected, setWalletConnected] = useState(false);
 const [claimStatus, setClaimStatus] = useState("");
-const [contractBalance, setContractBalance] = useState("0");
 
 const connectWallet = async () => {
 if (window.ethereum) {
@@ -21,51 +28,51 @@ alert("Install MetaMask to connect your wallet");
 }
 };
 
-useEffect(() => {
-const fetchBalance = async () => {
-if (window.ethereum && walletConnected) {
+const claimTokens = async () => {
+if (!window.ethereum) return alert("Please install MetaMask");
+
+try {
 const provider = new ethers.BrowserProvider(window.ethereum);
-const balance = await provider.getBalance("0xd67d7e5613ee5ce75cc3b358039ad8c3d42a0910");
-setContractBalance(ethers.formatEther(balance));
+const signer = await provider.getSigner();
+const contract = new ethers.Contract(claimContractAddress, claimAbi, signer);
+const tx = await contract.claim();
+await tx.wait();
+setClaimStatus("✅ Claim successful!");
+} catch (error) {
+console.error("Claim failed:", error);
+setClaimStatus("❌ Claim failed.");
 }
 };
-fetchBalance();
-}, [walletConnected]);
 
 return (
 <div
-className="min-h-screen flex items-center justify-center bg-cover bg-center px-4"
+className="min-h-screen w-screen flex items-center justify-center bg-cover bg-center px-4"
 style={{ backgroundImage: `url(${background})` }}
 >
-<div className="bg-black bg-opacity-60 p-8 rounded-3xl shadow-lg border border-gray-300 w-full max-w-sm">
-<div className="flex flex-col items-center">
-<img src={skynetLogo} alt="Skynet Logo" className="h-20 mb-4" />
-<h1 className="text-3xl font-bold text-white">SKYNET</h1>
-<p className="text-white">SKYNET Token Sale</p>
-<p className="text-white text-sm mb-4">
-Contract ETH Balance: {contractBalance} ETH
+<div className="bg-black bg-opacity-60 p-8 rounded-3xl shadow-lg border border-gray-300 w-full max-w-xl text-center mx-auto">
+<img src={skynetLogo} alt="Skynet Logo" className="h-16 mx-auto mb-4" />
+<h1 className="text-3xl font-bold text-white mb-1">SKYNET</h1>
+<p className="text-white font-medium mb-2">Claim Your Free SKY Token</p>
+<p className="text-sm text-gray-300 mb-6">
+Connect your wallet to claim 1000 SKY tokens instantly.
 </p>
-<p className="text-center text-white font-semibold text-md mb-4 animate-pulse">
-Connect your wallet now to instantly claim free <span className="text-cyan-400">SKY</span> tokens!
-</p>
-</div>
 
-<div className="space-y-4">
 <button
 onClick={connectWallet}
-className="w-full bg-gray-900 text-white py-2 px-4 rounded shadow-md hover:bg-gray-800"
+className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded mb-4 transition duration-300"
 >
 Connect Wallet
 </button>
-<button className="w-full bg-gray-900 text-white py-2 px-4 rounded shadow-md hover:bg-gray-800">
-Claim SKY Tokens
+
+<button
+onClick={claimTokens}
+className="w-full bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded transition duration-300"
+>
+Claim Free SKY
 </button>
-</div>
 
 {claimStatus && (
-<p className="text-center text-green-400 font-medium mt-4">
-{claimStatus}
-</p>
+<p className="mt-4 text-sm text-white">{claimStatus}</p>
 )}
 </div>
 </div>
