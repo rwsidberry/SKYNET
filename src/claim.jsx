@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import { ethers } from "ethers";
+import "./App.css"; // <— make sure this is at the top
 import skynetLogo from "./assets/skynet-logo.png";
-const background = "/cyberpunk-bg.jpg";
 
-// Replace this with your deployed contract address
-const claimContractAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138";
-
-// Minimal ABI for claim() function
-const claimAbi = [
-"function claim() public"
-];
+// Replace the image and contractAddress as needed
+const backgroundStyle = "fullscreen-bg";
+const claimContractAddress = "0xYourClaimContractAddress";
+const claimAbi = ["function claim() public"];
 
 export default function Claim() {
 const [walletConnected, setWalletConnected] = useState(false);
@@ -45,35 +42,19 @@ setClaimStatus("❌ Claim failed.");
 };
 
 return (
-<div
-className="min-h-screen w-screen flex items-center justify-center bg-cover bg-center px-4"
-style={{ backgroundImage: `url("/cyberpunk-bg.jpg")` }}
->
-<div className="bg-black bg-opacity-60 p-8 rounded-3xl shadow-lg border border-gray-300 w-full max-w-xl text-center mx-auto">
-<img src={skynetLogo} alt="Skynet Logo" className="h-16 mx-auto mb-4" />
-<h1 className="text-3xl font-bold text-white mb-1">SKYNET</h1>
-<p className="text-white font-medium mb-2">Claim Your Free SKY Token</p>
-<p className="text-sm text-gray-300 mb-6">
-Connect your wallet to claim 1000 SKY tokens instantly.
-</p>
-
-<button
-onClick={connectWallet}
-className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded mb-4 transition duration-300"
->
+<div className={backgroundStyle}>
+<div className="card">
+<img src={skynetLogo} alt="Skynet Logo" />
+<h1>SKYNET</h1>
+<p>Claim Your Free SKY Token</p>
+<p>Connect your wallet to claim 1000 SKY tokens instantly.</p>
+<button onClick={connectWallet} style={{ backgroundColor: "#007bff", color: "white" }}>
 Connect Wallet
 </button>
-
-<button
-onClick={claimTokens}
-className="w-full bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded transition duration-300"
->
+<button onClick={claimTokens} style={{ backgroundColor: "#555", color: "white" }}>
 Claim Free SKY
 </button>
-
-{claimStatus && (
-<p className="mt-4 text-sm text-white">{claimStatus}</p>
-)}
+{claimStatus && <p style={{ marginTop: "1rem" }}>{claimStatus}</p>}
 </div>
 </div>
 );

@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
+import "./App.css"; // Import shared styles
 import skynetLogo from "./assets/skynet-logo.png";
-const background = "/cyberpunk-bg.jpg";
 
+// Add your deployed contract address and ABI here
+const saleContractAddress = "0xYourSaleContractAddress"; // Replace with actual address
+const saleAbi = [
+"function buy() public payable",
+"function withdraw() public",
+"function getBalance() public view returns (uint256)"
+];
 
 export default function App() {
 const [walletConnected, setWalletConnected] = useState(false);
@@ -22,52 +29,83 @@ alert("Install MetaMask to connect your wallet");
 }
 };
 
-useEffect(() => {
 const fetchBalance = async () => {
-if (window.ethereum && walletConnected) {
+if (!window.ethereum) return;
+try {
 const provider = new ethers.BrowserProvider(window.ethereum);
-const balance = await provider.getBalance("0x3d40c7cc7c952dae8b4624ea22ed2c63e6485b78");
+const contract = new ethers.Contract(saleContractAddress, saleAbi, provider);
+const balance = await contract.getBalance();
 setContractBalance(ethers.formatEther(balance));
+} catch (err) {
+console.error("Balance fetch failed:", err);
 }
 };
+
+const buySky = async () => {
+if (!window.ethereum) return alert("Please install MetaMask");
+try {
+const provider = new ethers.BrowserProvider(window.ethereum);
+const signer = await provider.getSigner();
+const contract = new ethers.Contract(saleContractAddress, saleAbi, signer);
+const tx = await contract.buy({ value: ethers.parseEther(ethAmount) });
+await tx.wait();
 fetchBalance();
+alert("✅ Purchase successful!");
+} catch (err) {
+console.error("Purchase failed:", err);
+alert("❌ Purchase failed.");
+}
+};
+
+const withdrawEth = async () => {
+if (!window.ethereum) return alert("Please install MetaMask");
+try {
+const provider = new ethers.BrowserProvider(window.ethereum);
+const signer = await provider.getSigner();
+const contract = new ethers.Contract(saleContractAddress, saleAbi, signer);
+const tx = await contract.withdraw();
+await tx.wait();
+fetchBalance();
+alert("✅ ETH withdrawn!");
+} catch (err) {
+console.error("Withdrawal failed:", err);
+alert("❌ Withdrawal failed.");
+}
+};
+
+useEffect(() => {
+if (walletConnected) {
+fetchBalance();
+}
 }, [walletConnected]);
 
 return (
-<div
-className="min-h-screen w-screen flex items-center justify-center bg-cover bg-center px-4"
-style={{ backgroundImage: `url("/cyberpunk-bg.jpg")` }}
->
-<div className="bg-black bg-opacity-60 p-8 rounded-3xl shadow-lg border border-gray-300 w-full max-w-xl text-center mx-auto">
-<div className="flex flex-col items-center">
-<img src={skynetLogo} alt="Skynet Logo" className="h-20 mb-4" />
-<h1 className="text-3xl font-bold text-white">SKYNET</h1>
-<p className="text-white">SKYNET Token Sale</p>
-<p className="text-white text-sm mb-6">
-Contract ETH Balance: {contractBalance} ETH
-</p>
-</div>
-<div className="space-y-4">
-<button
-onClick={connectWallet}
-className="w-full bg-blue-800 text-white py-2 px-4 rounded shadow-md hover:bg-blue-700"
->
+<div className="fullscreen-bg">
+<div className="card">
+<img src={skynetLogo} alt="Skynet Logo" />
+<h1>SKYNET</h1>
+<p>SKYNET Token Sale</p>
+<p>Contract ETH Balance: {contractBalance} ETH</p>
+
+<button onClick={connectWallet} style={{ backgroundColor: "#007bff", color: "white" }}>
 Connect Wallet
 </button>
+
 <input
 type="text"
 placeholder="Amount in ETH"
-className="w-full px-4 py-2 rounded border border-gray-700 bg-gray-900 text-white placeholder-gray-400"
 value={ethAmount}
 onChange={(e) => setEthAmount(e.target.value)}
+style={{ marginTop: "1rem", padding: "0.5rem", width: "100%", borderRadius: "8px" }}
 />
-<button className="w-full bg-blue-800 text-white py-2 px-4 rounded shadow-md hover:bg-blue-700">
+
+<button onClick={buySky} style={{ backgroundColor: "#00b894", color: "white" }}>
 Buy SKY
 </button>
-<button className="w-full bg-blue-800 text-white py-2 px-4 rounded shadow-md hover:bg-blue-700">
+
+<button onClick={withdrawEth} style={{ backgroundColor: "#d63031", color: "white" }}>
 Admin Withdraw ETH
 </button>
-</div>
 </div>
 </div>
 );
