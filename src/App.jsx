@@ -26,7 +26,7 @@ useEffect(() => {
 const fetchBalance = async () => {
 if (window.ethereum && walletConnected) {
 const provider = new ethers.BrowserProvider(window.ethereum);
-const balance = await provider.getBalance("your_contract_address");
+const balance = await provider.getBalance("0x3d40c7cc7c952dae8b4624ea22ed2c63e6485b78");
 setContractBalance(ethers.formatEther(balance));
 }
 };
@@ -35,7 +35,7 @@ fetchBalance();
 
 return (
 <div
-className="min-h-screen w-screen flex items-center justify-center bg-cover bg-center px-4"
+className="min-h-screen w-full flex items-center justify-center bg-cover bg-center px-4"
 style={{ backgroundImage: `url(${background})` }}
 >
 <div className="bg-black bg-opacity-60 p-8 rounded-3xl shadow-lg border border-gray-300 w-full max-w-xl text-center mx-auto">

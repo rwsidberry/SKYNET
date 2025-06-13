@@ -4,7 +4,7 @@ import skynetLogo from "./assets/skynet-logo.png";
 const background = "./public/cyberpunk-bg.jpg";
 
 // Replace this with your deployed contract address
-const claimContractAddress = "0xYourClaimContractAddress";
+const claimContractAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138";
 
 // Minimal ABI for claim() function
 const claimAbi = [
@@ -46,7 +46,7 @@ setClaimStatus("❌ Claim failed.");
 
 return (
 <div
-className="min-h-screen w-screen flex items-center justify-center bg-cover bg-center px-4"
+className="min-h-screen w-full flex items-center justify-center bg-cover bg-center px-4"
 style={{ backgroundImage: `url(${background})` }}
 >
 <div className="bg-black bg-opacity-60 p-8 rounded-3xl shadow-lg border border-gray-300 w-full max-w-xl text-center mx-auto">
