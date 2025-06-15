@@ -199,7 +199,7 @@ Buy SKY for 0.01 ETH
 {/* Deep Link for Mobile */}
 {isMobile && !window.ethereum && (
 <a
-href="https://metamask.app.link/dapp/skynet-blush.vercel.app"
+href="https://metamask.app.link/dapp/skynet-token.vercel.app"
 target="_blank"
 rel="noopener noreferrer"
 style={{
